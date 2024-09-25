@@ -3,13 +3,14 @@ import next from "../assets/next.svg";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom"; // Import Link
 import PostCard from "./PostCard";
+import { API_URL } from "../const/API_URL";
 
 const HeroEight = () => {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("/api/post/getPosts");
+      const res = await fetch(`${API_URL}/post/getPosts`);
       const data = await res.json();
       setPosts(data.posts);
     };

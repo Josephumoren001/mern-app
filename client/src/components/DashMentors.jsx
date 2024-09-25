@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux'; // Assuming you have a Redux setup to manage user state
 import { Button } from 'flowbite-react'; // Importing Button component for admin actions
+import { API_URL } from '../const/API_URL';
 
 const DashMentors = () => {
   const [mentors, setMentors] = useState([]);
@@ -16,7 +17,7 @@ const DashMentors = () => {
       try {
         setLoading(true);
         // Fetch all mentors without filters
-        const res = await fetch('/api/mentor/getmentors');
+        const res = await fetch(`${API_URL}/mentor/getmentors`);
         const data = await res.json();
         if (!res.ok) {
           setError(true);
@@ -57,7 +58,7 @@ const DashMentors = () => {
   // Function to handle approving a mentor
   const handleApprove = async (mentorId) => {
     try {
-      const res = await fetch(`/api/mentor/approveMentor/${mentorId}`, {
+      const res = await fetch(`${API_URL}/mentor/approveMentor/${mentorId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -83,7 +84,7 @@ const DashMentors = () => {
   // Function to handle deleting a mentor
   const handleDeleteUser = async (mentorId) => {
     try {
-      const res = await fetch(`/api/mentor/deleteMentor/${mentorId}`, {
+      const res = await fetch(`${API_URL}/mentor/deleteMentor/${mentorId}`, {
         method: 'DELETE',
         headers: {
           Authorization: `Bearer ${currentUser?.token}`,

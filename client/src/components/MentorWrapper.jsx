@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaEnvelope, FaLinkedin, } from 'react-icons/fa';
+import { API_URL } from '../const/API_URL';
 
 function MentorWrapper() {
   const [mentors, setMentors] = useState([]);
@@ -10,7 +11,7 @@ function MentorWrapper() {
     const fetchMentors = async () => {
       try {
         setLoading(true);
-        const res = await fetch('/api/mentor/getmentors?approvalStatus=approved');
+        const res = await fetch(`${API_URL}/mentor/getmentors?approvalStatus=approved`);
         const data = await res.json();
         if (!res.ok) {
           console.error('API response error:', data);

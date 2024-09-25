@@ -2,6 +2,7 @@ import Button from "../components/Button";
 import MainHero from "../components/MainHero";
 import { useEffect, useState } from "react";
 import PostCard from "../components/PostCard";
+import { API_URL } from "../const/API_URL.js";
 
 const Blog = () => {
   const [posts, setPosts] = useState([]);
@@ -10,7 +11,7 @@ const Blog = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch("/api/post/getPosts");
+      const res = await fetch(`${API_URL}/post/getPosts`);
       const data = await res.json();
       setPosts(data.posts);
       setFilteredPosts(data.posts); // Initially, show all posts

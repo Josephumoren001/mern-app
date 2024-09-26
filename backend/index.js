@@ -29,19 +29,15 @@ class Server {
       contentSecurityPolicy: false,
       crossOriginEmbedderPolicy: false,
     }));
-    
-    // this.app.use(cors({
-    //   origin:  ['http://localhost:8080', 'https://deskstones.com', 'https://www.deskstones.com'],
-    //   credentials: true,
-    // }));
-    app.use(cors({
-      origin: '*', // Accepts requests from all origins
-      credentials: true,
+   
+    this.app.use(cors({
+      origin: ['http://localhost:8080', 'https://deskstones.com', 'https://www.deskstones.com'],
+      credentials: true, 
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
     }));
     
     
     this.app.use((req, res, next) => {
-      res.header('Access-Control-Allow-Origin', '*');
       res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
       res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
       res.header('Access-Control-Allow-Credentials', 'true');

@@ -30,8 +30,8 @@ export default function SignIn() {
       const res = await fetch(`${API_URL}/auth/signin`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify(formData),
-        credentials: 'include'
       });
       const data = await res.json();
       if (data.success === false) {

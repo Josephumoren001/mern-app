@@ -11,62 +11,83 @@ export default function DashUsers() {
   const [showMore, setShowMore] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const [userIdToDelete, setUserIdToDelete] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await fetch(`${API_URL}/user/getusers`);
+        setLoading(true);
+        const res = await fetch(`${API_URL}/user/getusers`, { credentials: 'include' });
         const data = await res.json();
         if (res.ok) {
           setUsers(data.users);
-          if (data.users.length < 9) {
-            setShowMore(false);
-          }
+          setShowMore(data.users.length >= 9);
+        } else {
+          throw new Error(data.message || 'Failed to fetch users');
         }
       } catch (error) {
-        console.log(error.message);
+        setError(error.message);
+      } finally {
+        setLoading(false);
       }
     };
-    if (currentUser.isAdmin) {
+
+    if (currentUser?.isAdmin) {
       fetchUsers();
     }
-  }, [currentUser._id]);
+  }, [currentUser?._id, currentUser?.isAdmin]);
 
   const handleShowMore = async () => {
     const startIndex = users.length;
     try {
-      const res = await fetch(`${API_URL}/user/getusers?startIndex=${startIndex}`);
+      const res = await fetch(`${API_URL}/user/getusers?startIndex=${startIndex}`, {
+        credentials: 'include',
+      });
       const data = await res.json();
       if (res.ok) {
         setUsers((prev) => [...prev, ...data.users]);
-        if (data.users.length < 9) {
-          setShowMore(false);
-        }
+        setShowMore(data.users.length >= 9);
+      } else {
+        throw new Error(data.message || 'Failed to fetch more users');
       }
     } catch (error) {
-      console.log(error.message);
+      setError(error.message);
     }
   };
 
   const handleDeleteUser = async () => {
     try {
-        const res = await fetch(`${API_URL}/user/delete/${userIdToDelete}`, {
-            method: 'DELETE',
-        });
-        const data = await res.json();
-        if (res.ok) {
-            setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
-            setShowModal(false);
-        } else {
-            console.log(data.message);
-        }
+      const res = await fetch(`${API_URL}/user/delete/${userIdToDelete}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+          Authorization: `Bearer ${currentUser?.token}`,
+        },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setUsers((prev) => prev.filter((user) => user._id !== userIdToDelete));
+        setShowModal(false);
+      } else {
+        throw new Error(data.message || 'Failed to delete user');
+      }
     } catch (error) {
-        console.log(error.message);
+      setError(error.message);
     }
   };
 
+  if (loading) {
+    return <div>Loading users...</div>;
+  }
+
+  if (error) {
+    return <div className="text-red-500">Error: {error}</div>;
+  }
+
   return (
     <div className='table-auto overflow-x-scroll md:mx-auto p-3 scrollbar scrollbar-track-slate-100 scrollbar-thumb-slate-300 dark:scrollbar-track-slate-700 dark:scrollbar-thumb-slate-500'>
-      {currentUser.isAdmin && users.length > 0 ? (
+      {currentUser?.isAdmin && users.length > 0 ? (
         <>
           <Table hoverable className='shadow-md'>
             <Table.Head>
@@ -80,9 +101,7 @@ export default function DashUsers() {
             {users.map((user) => (
               <Table.Body className='divide-y' key={user._id}>
                 <Table.Row className='bg-white dark:border-gray-700 dark:bg-gray-800'>
-                  <Table.Cell>
-                    {new Date(user.createdAt).toLocaleDateString()}
-                  </Table.Cell>
+                  <Table.Cell>{new Date(user.createdAt).toLocaleDateString()}</Table.Cell>
                   <Table.Cell>
                     <img
                       src={user.profilePicture}
@@ -93,11 +112,7 @@ export default function DashUsers() {
                   <Table.Cell>{user.username}</Table.Cell>
                   <Table.Cell>{user.email}</Table.Cell>
                   <Table.Cell>
-                    {user.isAdmin ? (
-                      <FaCheck className='text-green-500' />
-                    ) : (
-                      <FaTimes className='text-red-500' />
-                    )}
+                    {user.isAdmin ? <FaCheck className='text-green-500' /> : <FaTimes className='text-red-500' />}
                   </Table.Cell>
                   <Table.Cell>
                     <span
@@ -124,7 +139,7 @@ export default function DashUsers() {
           )}
         </>
       ) : (
-        <p>You have no users yet!</p>
+        <p>No users available or insufficient permissions!</p>
       )}
       <Modal
         show={showModal}

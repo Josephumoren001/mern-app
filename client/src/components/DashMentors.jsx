@@ -17,7 +17,9 @@ const DashMentors = () => {
       try {
         setLoading(true);
         // Fetch all mentors without filters
-        const res = await fetch(`${API_URL}/mentor/getmentors`);
+        const res = await fetch(`${API_URL}/mentor/getmentors`, {
+          credentials: 'include', // Ensure cookies are sent
+        });
         const data = await res.json();
         if (!res.ok) {
           setError(true);
@@ -62,8 +64,8 @@ const DashMentors = () => {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${currentUser?.token}`, 
         },
+        credentials: 'include', // Send cookies containing JWT token
       });
       const data = await res.json();
       if (res.ok) {
@@ -87,7 +89,7 @@ const DashMentors = () => {
       const res = await fetch(`${API_URL}/mentor/deleteMentor/${mentorId}`, {
         method: 'DELETE',
         headers: {
-          Authorization: `Bearer ${currentUser?.token}`,
+          Authorization: `Bearer ${currentUser?.token}`, // Use token from currentUser for deletion
         },
       });
       const data = await res.json();

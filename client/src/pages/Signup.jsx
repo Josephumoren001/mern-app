@@ -29,8 +29,8 @@ const navigate = useNavigate();
       const res = await fetch(`${API_URL}/auth/signup` ,{
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
         body: JSON.stringify(formData),
-        credentials: 'include'
       });
       const data = await res.json();
       if (data.success === false) {

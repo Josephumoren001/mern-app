@@ -58,6 +58,7 @@ const BecomeMentor = () => {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${await user.getIdToken()}`, // Send user token for backend verification
         },
+        credentials: 'include',
         body: JSON.stringify({
           fullName: formData.fullName,
           role: formData.role,

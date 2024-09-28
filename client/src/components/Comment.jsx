@@ -38,6 +38,7 @@ export default function Comment({ comment, onLike, onEdit, onDelete }) {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({
           content: editedContent,
         }),

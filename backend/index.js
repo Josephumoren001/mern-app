@@ -31,9 +31,10 @@ class Server {
     }));
    
     this.app.use(cors({
-      origin: ['http://localhost:8080', 'https://deskstones.com', 'https://www.deskstones.com'],
+      origin: ['http://localhost:5173', 'https://deskstones.com', 'https://www.deskstones.com'],
       credentials: true, 
       methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+      allowedHeaders: ['Authorization', 'Content-Type'],  
     }));
     
     

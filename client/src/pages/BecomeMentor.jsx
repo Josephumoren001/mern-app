@@ -8,6 +8,7 @@ import {
   ref,
   uploadBytesResumable,
 } from 'firebase/storage';
+import { API_URL } from '../const/API_URL';
 
 const BecomeMentor = () => {
   const [formData, setFormData] = useState({
@@ -51,7 +52,7 @@ const BecomeMentor = () => {
 
     try {
       const imageUrl = await uploadImage(formData.image);
-      const res = await fetch('/api/mentor/apply', {
+      const res = await fetch(`${API_URL}/mentor/apply`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

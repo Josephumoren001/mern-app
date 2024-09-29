@@ -35,7 +35,7 @@ class Server {
     this.app.use(
       cors({
         origin: [
-          'http://localhost:5173', 
+          'http://localhost:8080', 
           'https://deskstones.com', 
           'https://www.deskstones.com'
         ],
@@ -72,10 +72,7 @@ class Server {
 
   setupDatabase() {
     mongoose
-      .connect(process.env.MONGO, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-      })
+      .connect(process.env.MONGO, )
       .then(() => {
         console.log('MongoDB is connected');
       })

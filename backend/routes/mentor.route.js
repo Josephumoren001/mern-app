@@ -4,12 +4,12 @@ import { applyAsMentor, getMentors, deleteMentor, updateMentor, assignMentor, ap
 
 const router = express.Router();
 
-router.post('/apply',  applyAsMentor);
+router.post('/apply', verifyToken, applyAsMentor);
 router.get('/getmentors', getMentors);
-router.delete('/deletementor/:mentorId',  deleteMentor);
-router.put('/updatementor/:mentorId',  updateMentor);
-router.put('/assignmentor/:mentorId',  assignMentor);
-router.put('/approvementor/:mentorId',  approveMentor);
+router.delete('/deletementor/:mentorId', verifyToken, deleteMentor);
+router.put('/updatementor/:mentorId', verifyToken, updateMentor);
+router.put('/assignmentor/:mentorId', verifyToken, assignMentor);
+router.put('/approvementor/:mentorId', verifyToken, approveMentor);
 
 
 export default router;

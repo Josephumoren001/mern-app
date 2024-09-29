@@ -5,7 +5,7 @@ export default defineConfig({
   server: {
     proxy: process.env.VITE_API_URL === 'localhost:8080' ? {
       '/api': {
-        target: 'https://mern-app-7q9y.onrender.com',
+        target: 'localhost:8080',
         changeOrigin: true,
         secure: true,
       },
@@ -13,3 +13,5 @@ export default defineConfig({
   },
   plugins: [react()],
 });
+
+//https://mern-app-7q9y.onrender.com

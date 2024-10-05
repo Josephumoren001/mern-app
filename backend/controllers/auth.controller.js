@@ -59,7 +59,7 @@ export const signin = async (req, res, next) => {
       .cookie('access_token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production', // Secure cookie in production
-        sameSite: 'strict', // Mitigate CSRF
+        sameSite: 'none', // Mitigate CSRF
         maxAge: 24 * 60 * 60 * 1000, // Cookie expiry: 1 day
       })
       .json(rest);

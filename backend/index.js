@@ -35,7 +35,7 @@ class Server {
     this.app.use(
       cors({
         origin: [
-          'http://localhost:8080', 
+          'http://localhost:5173', 
           'https://deskstones.com', 
           'https://www.deskstones.com'
         ],
